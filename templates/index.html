@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="page-header">
+    <div>
+      <h1>Battery Research Proposals</h1>
+      <p>Shortlisted projects for portfolio construction.</p>
+    </div>
+  </header>
+
+<section class="budget-tracker" aria-label="Portfolio budget tracker">
+  <div class="budget-card" data-budget-card="a">
+    <span class="budget-card__label">Portfolio A</span>
+    <strong id="portfolio-a-total">€0</strong>
+    <span class="budget-card__meta">
+      <span id="portfolio-a-count">0</span> projects selected
+    </span>
+
+    <div class="recommend-actions">
+      <button
+        class="recommend-button"
+        type="button"
+        data-recommend-algorithm="greedy"
+        data-recommend-target="a"
+      >
+        Quick Recommend
+      </button>
+
+      <button
+        class="recommend-button"
+        type="button"
+        data-recommend-algorithm="genetic"
+        data-recommend-target="a"
+      >
+        Optimise Portfolio
+      </button>
+    </div>
+
+    <p class="fitness-score" id="portfolio-a-fitness"></p>
+  </div>
+
+  <div class="budget-card" data-budget-card="b">
+    <span class="budget-card__label">Portfolio B</span>
+    <strong id="portfolio-b-total">€0</strong>
+    <span class="budget-card__meta">
+      <span id="portfolio-b-count">0</span> projects selected
+    </span>
+
+    <div class="recommend-actions">
+      <button
+        class="recommend-button"
+        type="button"
+        data-recommend-algorithm="greedy"
+        data-recommend-target="b"
+      >
+        Quick Recommend
+      </button>
+
+      <button
+        class="recommend-button"
+        type="button"
+        data-recommend-algorithm="genetic"
+        data-recommend-target="b"
+      >
+        Optimise Portfolio
+      </button>
+    </div>
+
+    <p class="fitness-score" id="portfolio-b-fitness"></p>
+  </div>
+
+  <div class="action-group">
+    <a class="button button--secondary" id="portfolio-a-link" href="/portfolio/a">View A</a>
+    <a class="button button--secondary" id="portfolio-b-link" href="/portfolio/b">View B</a>
+    <a class="button" id="compare-link" href="/compare">Compare selected</a>
+  </div>
+</section>
+
+  <section class="panel">
+    <table class="projects-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Project</th>
+          <th>Subtopic</th>
+          <th>Risk</th>
+          <th>Review</th>
+          <th>Budget</th>
+          <th>Duration</th>
+          <th>Institution</th>
+          <th>Portfolio A</th>
+          <th>Portfolio B</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in projects %}
+          <tr>
+            <td>{{ project.id }}</td>
+            <td>
+              <strong>{{ project.title }}</strong>
+              <p>{{ project.description }}</p>
+            </td>
+            <td>{{ project.subtopic }}</td>
+            <td>{{ project.risk_score }}</td>
+            <td>{{ project.peer_review_score }}</td>
+            <td>€{{ "{:,.0f}".format(project.budget_eur) }}</td>
+            <td>{{ project.duration_months }} months</td>
+            <td>{{ project.host_institution }}</td>
+            <td>
+              <input
+                type="checkbox"
+                class="portfolio-checkbox"
+                data-portfolio="a"
+                data-project-id="{{ project.id }}"
+                data-budget="{{ project.budget_eur }}"
+                aria-label="Add {{ project.id }} to Portfolio A"
+              >
+            </td>
+            <td>
+              <input
+                type="checkbox"
+                class="portfolio-checkbox"
+                data-portfolio="b"
+                data-project-id="{{ project.id }}"
+                data-budget="{{ project.budget_eur }}"
+                aria-label="Add {{ project.id }} to Portfolio B"
+              >
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

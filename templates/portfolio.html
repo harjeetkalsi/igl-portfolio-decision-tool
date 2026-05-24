@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <header class="page-header">
+    <div>
+      <h1>Portfolio {{ portfolio_label }}</h1>
+      <p>Selected projects and summary metrics.</p>
+    </div>
+  </header>
+
+  <section class="summary-grid">
+    <article class="summary-card">
+      <span>Total budget</span>
+      <strong>€{{ "{:,.0f}".format(summary.total_budget) }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Average risk</span>
+      <strong>{{ "{:.1f}".format(summary.average_risk) }}</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Subtopics covered</span>
+      <strong>{{ summary.subtopic_count }} / 18</strong>
+    </article>
+
+    <article class="summary-card">
+      <span>Institutions</span>
+      <strong>{{ summary.institution_count }}</strong>
+    </article>
+  </section>
+
+    
+  <section class="diversity-grid">
+  <article class="diversity-card">
+    <div class="diversity-card__header">
+      <span>Subtopic diversity</span>
+      <strong>{{ "{:.2f}".format(summary.subtopic_diversity_score) }}</strong>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas
+        class="diversity-chart"
+        data-chart-items="{{ chart_data.subtopic | tojson | forceescape }}"
+      ></canvas>
+    </div>
+  </article>
+
+  <article class="diversity-card">
+    <div class="diversity-card__header">
+      <span>Institution diversity</span>
+      <strong>{{ "{:.2f}".format(summary.institution_diversity_score) }}</strong>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas
+        class="diversity-chart"
+        data-chart-items="{{ chart_data.institution | tojson | forceescape }}"
+      ></canvas>
+    </div>
+  </article>
+</section>
+
+  {% if selected_projects %}
+    <section class="panel">
+      <table class="projects-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Project</th>
+            <th>Subtopic</th>
+            <th>Risk</th>
+            <th>Review</th>
+            <th>Budget</th>
+            <th>Duration</th>
+            <th>Institution</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in selected_projects %}
+            <tr>
+              <td>{{ project.id }}</td>
+              <td>
+                <strong>{{ project.title }}</strong>
+                <p>{{ project.description }}</p>
+              </td>
+              <td>{{ project.subtopic }}</td>
+              <td>{{ project.risk_score }}</td>
+              <td>{{ project.peer_review_score }}</td>
+              <td>€{{ "{:,.0f}".format(project.budget_eur) }}</td>
+              <td>{{ project.duration_months }} months</td>
+              <td>{{ project.host_institution }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </section>
+  {% else %}
+    <section class="empty-state">
+      <h2>No projects selected</h2>
+      <p>Go back to the projects table and select projects for Portfolio {{ portfolio_label }}.</p>
+      <a class="button button--compact" href="/">Back to projects</a>
+    </section>
+  {% endif %}
+{% endblock %}

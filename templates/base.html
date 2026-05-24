@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IGL Portfolio Decision Support Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar__brand">IGL Portfolio Tool</div>
+
+      <div class="sidebar__content">
+  <nav class="sidebar__nav">
+    <a data-nav-link="projects" href="/">Projects</a>
+    <a data-nav-link="portfolio-a" href="/portfolio/a">Portfolio A</a>
+    <a data-nav-link="portfolio-b" href="/portfolio/b">Portfolio B</a>
+    <a data-nav-link="compare" href="/compare">Compare</a>
+  </nav>
+
+  <nav class="sidebar__nav sidebar__nav--secondary">
+    <button class="sidebar__nav-button" type="button" id="open-settings-panel">
+      Settings
+    </button>
+
+    <a data-nav-link="readme" href="/readme">README</a>
+  </nav>
+</div>
+    </aside>
+
+    <div class="settings-overlay" id="settings-overlay" hidden></div>
+
+<aside class="settings-panel" id="settings-panel" aria-hidden="true">
+  <div class="settings-panel__header">
+    <div>
+      <h2>Settings</h2>
+      <p>Configure portfolio assumptions.</p>
+    </div>
+
+    <button class="settings-panel__close" type="button" id="close-settings-panel">
+      Close
+    </button>
+  </div>
+
+  <section class="settings-section">
+    <label class="settings-label" for="max-budget-input">
+      Maximum budget per portfolio
+    </label>
+
+    <input
+      class="settings-input"
+      type="number"
+      id="max-budget-input"
+      min="0"
+      step="50000"
+      value="4000000"
+    >
+
+    <p class="settings-help">
+      Current cap: <strong id="max-budget-display">€4,000,000</strong>
+    </p>
+
+  </section>
+
+  <section class="settings-section">
+  <label class="settings-label" for="openai-api-key-input">
+    OpenAI API Key
+  </label>
+
+  <input
+    class="settings-input"
+    type="password"
+    id="openai-api-key-input"
+    placeholder="sk-..."
+    autocomplete="off"
+  >
+
+  <p class="settings-help">
+    Your key is held in memory for this browser session and only sent to Flask when generating an AI summary.
+  </p>
+</section>
+
+  <section class="settings-section">
+    <h3>Coming Soon</h3>
+
+    <ul class="coming-soon-list">
+      <li>
+        <span>Upload a custom dataset (CSV / JSON)</span>
+        <strong>Coming Soon</strong>
+      </li>
+      <li>
+        <span>Configure algorithm weights (diversity vs risk sliders)</span>
+        <strong>Coming Soon</strong>
+      </li>
+      <li>
+        <span>Third portfolio slot</span>
+        <strong>Coming Soon</strong>
+      </li>
+      <li>
+        <span>PDF export of comparison view</span>
+        <strong>Coming Soon</strong>
+      </li>
+      <li>
+        <span>Named and saved portfolios</span>
+        <strong>Coming Soon</strong>
+      </li>
+    </ul>
+  </section>
+</aside>
+
+    <main class="main">
+      {% block content %}{% endblock %}
+    </main>
+     
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  </body>
+</html>

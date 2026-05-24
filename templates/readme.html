@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <article class="readme-page">
+    <header class="readme-hero">
+      <h1>IGL Portfolio Decision Support Tool</h1>
+      <p>
+        A decision support tool to help research funders build, compare and optimise funding portfolios from a shortlist of battery research proposals. Built as a prototype for the Innovation Growth Lab at Nesta.
+      </p>
+    </header>
+
+    <section class="readme-section">
+      <h2>How to Use</h2>
+
+      <h3>Building Portfolios</h3>
+      <p>
+        Browse the full shortlist of 50 projects in the projects table. Use the checkboxes on each row to add a project to Portfolio A, Portfolio B, or both. The running budget tracker updates in real time and turns red if you exceed the budget cap.
+      </p>
+      <p>
+        Both portfolios are independent alternative scenarios — the same project can appear in both. They are not a split of the pot.
+      </p>
+
+      <h3>Settings</h3>
+      <p>
+        The settings panel allows you to configure the maximum budget per portfolio, which defaults to €4,000,000. Future iterations would expand this to include uploading a different dataset and configuring the algorithm weights via sliders.
+      </p>
+
+      <h3>Comparing Portfolios</h3>
+      <p>
+        Navigate to the Compare page to see Portfolio A and Portfolio B side by side. Each portfolio displays:
+      </p>
+      <ul>
+        <li>Total budget allocated</li>
+        <li>Average risk score</li>
+        <li>Subtopic diversity score (0–1)</li>
+        <li>Institution diversity score (0–1)</li>
+        <li>Budget split by subtopic (pie chart)</li>
+        <li>Budget split by institution (pie chart)</li>
+      </ul>
+    </section>
+
+    <section class="readme-section">
+      <h2>Understanding the Diversity Scores</h2>
+
+      <h3>Subtopic Diversity Score (0–1)</h3>
+      <p>
+        This score tells you how evenly your portfolio's funding is spread across different battery research topics. A score close to 1 means your budget is distributed broadly — you are funding a wide range of research areas with no single topic dominating. A score close to 0 means most of your budget is concentrated in one or two topics, even if several others are technically represented.
+      </p>
+      <p>
+        For example — a portfolio with 10 different subtopics but 80% of the budget going to solid-state batteries would score poorly. A portfolio where funding is spread roughly evenly across 8 subtopics would score much higher. The score rewards genuine spread, not just variety.
+      </p>
+
+      <h3>Institution Diversity Score (0–1)</h3>
+      <p>
+        This works the same way but looks at which universities and research institutions are receiving funding. A score close to 1 means your budget is spread across many different institutions. A score close to 0 means most of your funding is going to one or two places.
+      </p>
+      <p>
+        This matters because funding the same institution repeatedly — even across different topics — concentrates influence and may not reflect the broadest possible view of the research landscape.
+      </p>
+    </section>
+
+    <section class="readme-section">
+      <h2>The Pie Charts</h2>
+      <p>
+        Each portfolio has two pie charts:
+      </p>
+      <p>
+        <strong>Budget by Subtopic</strong> shows how your total budget is divided across battery research topics. Each slice is a subtopic — the bigger the slice, the more of your budget is going there. A diverse portfolio looks like many roughly equal slices. A concentrated one has one or two slices that dominate.
+      </p>
+      <p>
+        <strong>Budget by Institution</strong> shows the same thing but for host institutions — which universities and research centres are receiving funding, and how much.
+      </p>
+      <p>
+        Use the charts alongside the diversity scores to get an intuitive feel for where your money is going. If a single slice jumps out, that is a signal your portfolio may be over-concentrated in that area.
+      </p>
+    </section>
+
+    <section class="readme-section">
+      <h2>Sharing Your Comparison</h2>
+      <p>
+        Want to share your portfolios with a colleague or come back to them later?
+      </p>
+      <p>
+        Once you have built your two portfolios, click "Copy Share Link" on the compare page. This copies a link to your clipboard that you can paste into an email, a message, or save somewhere for later.
+      </p>
+      <p>
+        When someone opens that link — or when you open it yourself later — the tool will automatically load exactly the same portfolios you put together, ready to view and compare. No account needed, no saving required. Everything is captured in the link itself.
+      </p>
+    </section>
+
+    <section class="readme-section">
+      <h2>Portfolio Optimisation Algorithms</h2>
+      <p>
+        Rather than selecting projects manually, you can let the tool recommend a portfolio using one of two algorithms. Both optimise for the same goal: maximising diversity and risk across the portfolio within the budget.
+      </p>
+
+      <h3>How Projects Are Scored</h3>
+      <p>
+        Every project is evaluated against three criteria:
+      </p>
+
+      <div class="scoring-breakdown">
+        <div>
+          <strong>40%</strong>
+          <span>Subtopic spread</span>
+        </div>
+        <div>
+          <strong>40%</strong>
+          <span>Institution spread</span>
+        </div>
+        <div>
+          <strong>20%</strong>
+          <span>Risk score</span>
+        </div>
+      </div>
+
+      <p>
+        Diversity is measured using the Herfindahl-Hirschman Index — a budget-weighted method borrowed from economics. Unlike simply counting unique subtopics, this method accounts for how budget is actually distributed. A portfolio with 10 subtopics but 90% of funding in one area scores poorly. A portfolio with even budget spread scores close to 1.
+      </p>
+
+      <h3>⚡ Quick Recommend (Greedy Algorithm)</h3>
+      <p>
+        Think of this like a smart shopping assistant. It looks at all 50 projects and asks: "given what is already in the basket, which project would add the most value right now?" It picks that project, adds it, then asks the same question again with the updated basket — repeating until the budget runs out.
+      </p>
+      <p>
+        The clever part is that it thinks about the basket as a whole, not just individual projects. If you already have three solid-state battery projects funded, a fourth one will not add much diversity — so the algorithm will favour a project from a completely different research area instead, even if that project's individual risk score is slightly lower.
+      </p>
+      <p>
+        This runs instantly and produces a strong result.
+      </p>
+      <p>
+        <strong>Best for:</strong> getting a good recommendation quickly.
+      </p>
+
+      <h3>🧬 Optimise Portfolio (Genetic Algorithm)</h3>
+      <p>
+        This one takes a few seconds but works much harder to find a better answer. It is inspired by how evolution works in nature.
+      </p>
+      <p>
+        It starts by generating 100 completely random valid portfolios. It then scores each one, keeps the best performing half, and breeds new portfolios by mixing pairs of good ones together — combining the strongest projects from each. It also occasionally makes small random changes, the same way mutations occur in nature. It repeats this process 500 times, with each round producing a slightly better generation of portfolios.
+      </p>
+      <p>
+        The result is a portfolio that has been tested and refined across thousands of combinations — something the Quick Recommend approach cannot do because it only ever makes one pass through the projects.
+      </p>
+      <p>
+        It will take 1–3 seconds to run. A progress message will appear while it works.
+      </p>
+      <p>
+        <strong>Best for:</strong> finding the strongest possible portfolio when you have a moment to wait.
+      </p>
+
+      <h3>Which Should I Use?</h3>
+      <p>
+        Try both. Once each has run you will see a fitness score beneath each portfolio — this is an overall measure of how well it performs against the diversity and risk goals. Compare the two scores and use whichever portfolio performed better as your starting point. You can then tweak the selection manually from there.
+      </p>
+    </section>
+
+    <section class="readme-section">
+      <h2>Diversity Scoring — Technical Note</h2>
+      <p>
+        Both algorithms and all diversity scores use the Herfindahl-Hirschman Index (HHI):
+      </p>
+
+      <pre><code>def diversity_score(portfolio, dimension):
+    total_budget = sum(p['budget_eur'] for p in portfolio)
+    shares = {}
+    for p in portfolio:
+        key = p[dimension]
+        shares[key] = shares.get(key, 0) + p['budget_eur']
+    hhi = sum((budget / total_budget) ** 2 for budget in shares.values())
+    return round(1 - hhi, 2)</code></pre>
+
+      <p>
+        A score of 0 means all budget in one category. A score close to 1 means perfectly even distribution.
+      </p>
+    </section>
+
+    <section class="readme-section">
+      <h2>Future Improvements</h2>
+
+      <ul class="coming-soon-list readme-coming-soon-list">
+        <li>
+          <span>Upload a custom dataset for a different grant programme</span>
+          <strong>Coming Soon</strong>
+        </li>
+        <li>
+          <span>Configurable algorithm weights via sliders — for example, prioritising risk over diversity</span>
+          <strong>Coming Soon</strong>
+        </li>
+        <li>
+          <span>PDF export of the comparison view</span>
+          <strong>Coming Soon</strong>
+        </li>
+        <li>
+          <span>Third portfolio slot for three-way comparisons</span>
+          <strong>Coming Soon</strong>
+        </li>
+        <li>
+          <span>Named and saved portfolios</span>
+          <strong>Coming Soon</strong>
+        </li>
+      </ul>
+    </section>
+
+    <footer class="readme-footer">
+      Built by Harjeet as part of a technical task for the IGL Creative Technologist role at Nesta.
+    </footer>
+  </article>
+{% endblock %}
