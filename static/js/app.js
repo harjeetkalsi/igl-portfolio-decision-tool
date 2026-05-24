@@ -108,6 +108,27 @@ const setPortfolioSelection = (portfolio, projectIds) => {
     });
 };
 
+const clearFitnessScore = (portfolio) => {
+  const scoreElement = document.querySelector(`#portfolio-${portfolio}-fitness`);
+
+  if (!scoreElement) {
+    return;
+  }
+
+  scoreElement.textContent = "";
+};
+
+const clearPortfolioSelection = (portfolio) => {
+  document
+    .querySelectorAll(`.portfolio-checkbox[data-portfolio="${portfolio}"]`)
+    .forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+  clearFitnessScore(portfolio);
+  updateDashboard();
+};
+
 const updatePortfolioSummary = (portfolio) => {
   const selectedProjects = getSelectedProjects(portfolio);
   const totalBudget = selectedProjects.reduce(
@@ -363,6 +384,12 @@ updateDashboard();
 
 document.querySelectorAll(".portfolio-checkbox").forEach((checkbox) => {
   checkbox.addEventListener("change", updateDashboard);
+});
+
+document.querySelectorAll("[data-clear-portfolio]").forEach((button) => {
+  button.addEventListener("click", () => {
+    clearPortfolioSelection(button.dataset.clearPortfolio);
+  });
 });
 
 document.querySelectorAll("[data-recommend-algorithm]").forEach((button) => {

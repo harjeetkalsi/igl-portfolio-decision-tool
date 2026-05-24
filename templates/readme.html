@@ -20,10 +20,6 @@
         Both portfolios are independent alternative scenarios — the same project can appear in both. They are not a split of the pot.
       </p>
 
-      <h3>Settings</h3>
-      <p>
-        The settings panel allows you to configure the maximum budget per portfolio, which defaults to €4,000,000. Future iterations would expand this to include uploading a different dataset and configuring the algorithm weights via sliders.
-      </p>
 
       <h3>Comparing Portfolios</h3>
       <p>
@@ -174,6 +170,40 @@
         A score of 0 means all budget in one category. A score close to 1 means perfectly even distribution.
       </p>
     </section>
+
+    <h2>Settings</h2>
+<p>
+  The settings panel is accessible from the sidebar and allows you to configure the tool to your needs.
+</p>
+
+<h4>Maximum Budget</h4>
+<p>
+  The maximum budget per portfolio defaults to €4,000,000 as per the grant programme brief. You can change this figure here if you are working with a different funding pot. The budget cap updates in real time across both the manual selection tracker and the recommendation algorithms.
+</p>
+
+<h4>OpenAI API Key</h4>
+<p>
+  To use the AI Summary feature on the compare page, you will need to provide an OpenAI API key. Here is how to get one:
+</p>
+
+<ol>
+  <li>Go to platform.openai.com and create an account or sign in.</li>
+  <li>Navigate to API keys and click Create new secret key.</li>
+  <li>Copy the key and paste it into the OpenAI API Key field in settings.</li>
+</ol>
+
+<p>
+  Your key is never stored anywhere — it is held in memory for your session only and sent to the Flask backend when you request a summary. It is not logged or saved server-side.
+</p>
+
+<h4>How the AI Summary Works</h4>
+<p>
+  Once your API key is set, navigate to the Compare page and click "✨ Generate AI Summary." The tool collects the full data from both portfolios — including total budgets, average risk scores, diversity scores, and the exact percentage breakdown of funding by subtopic and by institution — and passes all of it into the AI prompt.
+</p>
+
+<p>
+  This means the summary is grounded entirely in your actual portfolio data and calculations rather than any general knowledge or assumptions. The AI is explicitly instructed to only use the figures provided and to quantify its observations rather than speak in vague terms.
+</p>
 
     <section class="readme-section">
       <h2>Future Improvements</h2>
